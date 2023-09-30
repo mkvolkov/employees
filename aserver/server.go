@@ -81,5 +81,5 @@ func (s *AServer) MapHandlers(rs Routes) {
 	s.AtrServer.POST("/hire", rs.HireEmployee()).UseBefore(s.BeforePost).UseBefore(s.BeforeAll)
 	s.AtrServer.POST("/fire", rs.FireEmployee()).UseBefore(s.BeforePost).UseBefore(s.BeforeAll)
 	s.AtrServer.GET("/getv", rs.GetVacationDays()).UseBefore(s.BeforeGet).UseBefore(s.BeforeAll)
-	s.AtrServer.GET("/find", rs.FindEmployeeByID()).UseBefore(s.BeforeGet).UseBefore(s.BeforeAll)
+	s.AtrServer.GET("/find", rs.GetEmployeeByID()).UseBefore(s.BeforeGet).UseBefore(s.BeforeAll)
 }

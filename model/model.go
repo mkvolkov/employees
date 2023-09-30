@@ -11,6 +11,10 @@ type Employee struct {
 	Vdays   int    `db:"vdays"`
 }
 
-type DeleteID struct {
+type ModifyID struct {
 	ID int `json:"id"`
+}
+
+type Vdays struct {
+	Vdays int `db:"vdays"`
 }

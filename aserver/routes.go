@@ -14,7 +14,7 @@ type Routes interface {
 	HireEmployee() atreugo.View
 	FireEmployee() atreugo.View
 	GetVacationDays() atreugo.View
-	FindEmployeeByID() atreugo.View
+	GetEmployeeByID() atreugo.View
 }
 
 type RBase struct {
@@ -46,7 +46,7 @@ func (r *RBase) HireEmployee() atreugo.View {
 
 func (r *RBase) FireEmployee() atreugo.View {
 	return func(ctx *atreugo.RequestCtx) error {
-		var delID model.DeleteID
+		var delID model.ModifyID
 
 		ctxDb := context.Background()
 
@@ -69,12 +69,48 @@ func (r *RBase) FireEmployee() atreugo.View {
 
 func (r *RBase) GetVacationDays() atreugo.View {
 	return func(ctx *atreugo.RequestCtx) error {
-		return ctx.TextResponse("GetVacationDays\n")
+		var getID model.ModifyID
+
+		var data []model.Vdays
+
+		ctxDb := context.Background()
+
+		ctype := ctx.Value("ctype").(string)
+		if ctype == "json" {
+			err := json.Unmarshal(ctx.Request.Body(), &getID)
+			if err != nil {
+				return ctx.TextResponse(err.Error(), ResponseInternalError)
+			}
+
+			data, err = repo.GetVacationDays(r.db, ctxDb, getID.ID)
+			if err != nil {
+				return ctx.ErrorResponse(err, ResponseInternalError)
+			}
+		}
+		return ctx.JSONResponse(data)
 	}
 }
 
-func (r *RBase) FindEmployeeByID() atreugo.View {
+func (r *RBase) GetEmployeeByID() atreugo.View {
 	return func(ctx *atreugo.RequestCtx) error {
-		return ctx.TextResponse("FindEmployeeByID\n")
+		var getID model.ModifyID
+
+		var data []model.Employee
+
+		ctxDb := context.Background()
+
+		ctype := ctx.Value("ctype").(string)
+		if ctype == "json" {
+			err := json.Unmarshal(ctx.Request.Body(), &getID)
+			if err != nil {
+				return ctx.TextResponse(err.Error(), ResponseInternalError)
+			}
+
+			data, err = repo.GetEmployeeByID(r.db, ctxDb, getID.ID)
+			if err != nil {
+				return ctx.ErrorResponse(err, ResponseInternalError)
+			}
+		}
+		return ctx.JSONResponse(data)
 	}
 }
