@@ -6,6 +6,9 @@ import (
 	"employees/cfg"
 	"fmt"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
 
 	_ "github.com/go-sql-driver/mysql"
 
@@ -50,9 +53,23 @@ func main() {
 	aCtx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	signalCh := make(chan os.Signal, 1)
+	signal.Notify(signalCh, os.Interrupt, syscall.SIGTERM)
+
+	finishCh := make(chan struct{})
+	go func() {
+		s := <-signalCh
+		log.Printf("got signal %v, graceful shutdown...", s)
+		mainConn.Close()
+		finishCh <- struct{}{}
+	}()
+
 	aServer := aserver.NewServer("localhost", "8080", cMainCfg, mainConn)
 	err = aServer.Run(aCtx)
 	if err != nil {
 		log.Fatalln("couldn't run Atreugo server, exiting...")
 	}
+
+	<-finishCh
+	log.Println("Finished shutdown")
 }
