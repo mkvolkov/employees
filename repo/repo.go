@@ -17,8 +17,8 @@ var queryFireEmployee string = `DELETE FROM employees
 var queryGetVdaysByID string = `SELECT vdays FROM employees
 	WHERE id = ?`
 
-var queryGetEmployeeByID string = `SELECT * FROM employees
-	WHERE id = ?`
+var queryGetEmployeeByName string = `SELECT * FROM employees
+	WHERE name LIKE ?`
 
 func HireEmployee(db *sqlx.DB, ctx context.Context, emp *model.Employee) error {
 	_, err := db.ExecContext(
@@ -68,12 +68,12 @@ func GetVacationDays(db *sqlx.DB, ctx context.Context, id int) (vd []model.Vdays
 	return vd, nil
 }
 
-func GetEmployeeByID(db *sqlx.DB, ctx context.Context, id int) (data []model.Employee, err error) {
+func GetEmployeeByName(db *sqlx.DB, ctx context.Context, name string) (data []model.Employee, err error) {
 	err = db.SelectContext(
 		ctx,
 		&data,
-		queryGetEmployeeByID,
-		id,
+		queryGetEmployeeByName,
+		name,
 	)
 
 	if err != nil {

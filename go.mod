@@ -6,6 +6,7 @@ require (
 	github.com/casbin/casbin/v2 v2.77.2
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/goccy/go-json v0.10.2
+	github.com/guregu/null v4.0.0+incompatible
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/rs/zerolog v1.31.0
 	github.com/savsgio/atreugo/v11 v11.10.1
