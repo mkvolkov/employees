@@ -57,14 +57,14 @@ func NewServer(host, port string, cfg *cfg.Cfg, db *sqlx.DB) *AServer {
 	var logger zerolog.Logger
 
 	if cfg.Logfile == "" {
-		logger = zerolog.New(os.Stdout).Level(zerolog.InfoLevel)
+		logger = zerolog.New(os.Stdout).Level(zerolog.InfoLevel).With().Timestamp().Logger()
 	} else {
 		logfile, err := os.Create(cfg.Logfile)
 		if err != nil {
 			return nil
 		}
 
-		logger = zerolog.New(logfile).Level(zerolog.InfoLevel)
+		logger = zerolog.New(logfile).Level(zerolog.InfoLevel).With().Timestamp().Logger()
 	}
 
 	return &AServer{
