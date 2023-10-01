@@ -3,7 +3,8 @@ package cfg
 import "github.com/spf13/viper"
 
 type Cfg struct {
-	Mysql MsCfg
+	Mysql   MsCfg
+	Logfile string `json:"logfile"`
 }
 
 type MsCfg struct {

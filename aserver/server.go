@@ -17,7 +17,7 @@ type AServer struct {
 	AtrServer   *atreugo.Atreugo
 	CsbEnforcer *casbin.Enforcer
 	DB          *sqlx.DB
-	Logger      zerolog.Logger
+	Logger      *zerolog.Logger
 }
 
 func NewServer(host, port string, cfg *cfg.Cfg, db *sqlx.DB) *AServer {
@@ -54,19 +54,30 @@ func NewServer(host, port string, cfg *cfg.Cfg, db *sqlx.DB) *AServer {
 		return nil
 	}
 
-	logger := zerolog.New(os.Stdout).Level(zerolog.InfoLevel)
+	var logger zerolog.Logger
+
+	if cfg.Logfile == "" {
+		logger = zerolog.New(os.Stdout).Level(zerolog.InfoLevel)
+	} else {
+		logfile, err := os.Create(cfg.Logfile)
+		if err != nil {
+			return nil
+		}
+
+		logger = zerolog.New(logfile).Level(zerolog.InfoLevel)
+	}
 
 	return &AServer{
 		MpAuth:      mpAuth,
 		AtrServer:   aSrv,
 		CsbEnforcer: cEnforcer,
 		DB:          db,
-		Logger:      logger,
+		Logger:      &logger,
 	}
 }
 
 func (s *AServer) Run(ctx context.Context) error {
-	aHandlers := &RBase{db: s.DB}
+	aHandlers := &RBase{db: s.DB, logger: s.Logger}
 
 	s.MapHandlers(aHandlers)
 

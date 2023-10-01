@@ -9,6 +9,7 @@ import (
 
 	"github.com/goccy/go-json"
 	"github.com/jmoiron/sqlx"
+	"github.com/rs/zerolog"
 	"github.com/savsgio/atreugo/v11"
 )
 
@@ -20,7 +21,8 @@ type Routes interface {
 }
 
 type RBase struct {
-	db *sqlx.DB
+	db     *sqlx.DB
+	logger *zerolog.Logger
 }
 
 func (r *RBase) HireEmployee() atreugo.View {
@@ -32,6 +34,7 @@ func (r *RBase) HireEmployee() atreugo.View {
 
 		ctype := ctx.Value("ctype").(string)
 		if ctype == "json" {
+			r.logger.Info().Msgf("Hire Employee: JSON, %s", string(ctx.Request.Body()))
 			err := json.Unmarshal(ctx.Request.Body(), &empl)
 			if err != nil {
 				return ctx.TextResponse(err.Error(), ResponseBadRequest)
@@ -44,6 +47,7 @@ func (r *RBase) HireEmployee() atreugo.View {
 		}
 
 		if ctype == "xml" {
+			r.logger.Info().Msgf("Hire Employee: XML, %s", string(ctx.Request.Body()))
 			fmt.Println(string(ctx.Request.Body()))
 			err := xml.Unmarshal(ctx.Request.Body(), &xempl)
 			if err != nil {
@@ -78,6 +82,7 @@ func (r *RBase) FireEmployee() atreugo.View {
 
 		ctype := ctx.Value("ctype").(string)
 		if ctype == "json" {
+			r.logger.Info().Msgf("Fire Employee: JSON, %s", string(ctx.Request.Body()))
 			err := json.Unmarshal(ctx.Request.Body(), &delID)
 			if err != nil {
 				return ctx.TextResponse(err.Error(), ResponseBadRequest)
@@ -90,6 +95,7 @@ func (r *RBase) FireEmployee() atreugo.View {
 		}
 
 		if ctype == "xml" {
+			r.logger.Info().Msgf("Fire Employee: XML, %s", string(ctx.Request.Body()))
 			err := xml.Unmarshal(ctx.Request.Body(), &xdelID)
 			if err != nil {
 				return ctx.ErrorResponse(err, ResponseBadRequest)
@@ -117,6 +123,7 @@ func (r *RBase) GetVacationDays() atreugo.View {
 
 		ctype := ctx.Value("ctype").(string)
 		if ctype == "json" {
+			r.logger.Info().Msgf("Get Vacation Days: JSON, %s", string(ctx.Request.Body()))
 			err := json.Unmarshal(ctx.Request.Body(), &getID)
 			if err != nil {
 				return ctx.TextResponse(err.Error(), ResponseBadRequest)
@@ -129,6 +136,7 @@ func (r *RBase) GetVacationDays() atreugo.View {
 		}
 
 		if ctype == "xml" {
+			r.logger.Info().Msgf("Fire Employee: XML, %s", string(ctx.Request.Body()))
 			err := xml.Unmarshal(ctx.Request.Body(), &xgetID)
 			if err != nil {
 				return ctx.ErrorResponse(err, ResponseBadRequest)
@@ -167,6 +175,7 @@ func (r *RBase) GetEmployeeByName() atreugo.View {
 
 		ctype := ctx.Value("ctype").(string)
 		if ctype == "json" {
+			r.logger.Info().Msgf("Get Employee By Name: JSON, %s", string(ctx.Request.Body()))
 			err := json.Unmarshal(ctx.Request.Body(), &getName)
 			if err != nil {
 				return ctx.TextResponse(err.Error(), ResponseBadRequest)
@@ -181,6 +190,7 @@ func (r *RBase) GetEmployeeByName() atreugo.View {
 		}
 
 		if ctype == "xml" {
+			r.logger.Info().Msgf("Get Employee By Name: XML, %s", string(ctx.Request.Body()))
 			err := xml.Unmarshal(ctx.Request.Body(), &xgetName)
 			if err != nil {
 				return ctx.ErrorResponse(err, ResponseBadRequest)

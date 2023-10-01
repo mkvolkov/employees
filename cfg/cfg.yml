@@ -5,3 +5,5 @@ Mysql:
   user: 'mike'
   password: 'mikepass1'
   dbname: 'employees'
+
+logfile: 'log.txt'
