@@ -86,7 +86,7 @@ curl -X POST http://localhost:8080/fire -i -u admin2:adminpass4 -H 'Content-Type
                 <empl_id>
                     <id>16</id>
                 </empl_id>
-            </data>
+            </data>'
 ```
 
 Получить количество дней отпуска по индексу:
