@@ -57,7 +57,7 @@ curl -X POST http://localhost:8080/hire -i -u admin2:adminpass4 -H 'Content-Type
 Соответствующий пример XML:
 
 ```
-curl -X POST http://localhost:8080/hire -i -u admin2:adminpass4 -H 'Content-Type: application/json' -d '
+curl -X POST http://localhost:8080/hire -i -u admin2:adminpass4 -H 'Content-Type: application/xml' -d '
 <?xml version="1.0" encoding="UTF-8"?>
             <data>
                 <employee>
@@ -80,7 +80,7 @@ curl -X POST http://localhost:8080/fire -i -u admin2:adminpass4 -H 'Content-Type
 Уволить сотрудника (пример XML):
 
 ```
-curl -X POST http://localhost:8080/fire -i -u admin2:adminpass4 -H 'Content-Type: application/json' -d '
+curl -X POST http://localhost:8080/fire -i -u admin2:adminpass4 -H 'Content-Type: application/xml' -d '
 <?xml version="1.0" encoding="UTF-8"?>
             <data>
                 <empl_id>
